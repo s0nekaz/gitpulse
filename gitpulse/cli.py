@@ -57,16 +57,35 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _enable_windows_ansi() -> bool:
+    """Ask the Windows console to understand colour codes. False if it can't."""
+    try:
+        import ctypes
+
+        kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        handle = kernel32.GetStdHandle(-11)  # STD_OUTPUT_HANDLE
+        mode = ctypes.c_uint32()
+        if not kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
+            return False
+        # 0x0004 = ENABLE_VIRTUAL_TERMINAL_PROCESSING
+        return bool(kernel32.SetConsoleMode(handle, mode.value | 0x0004))
+    except Exception:
+        return False
+
+
 def _use_color(mode: str) -> bool:
-    if mode == "always":
-        return True
     if mode == "never":
         return False
-    return (
+    if mode == "auto" and not (
         sys.stdout.isatty()
         and "NO_COLOR" not in os.environ
         and os.environ.get("TERM") != "dumb"
-    )
+    ):
+        return False
+    if sys.platform == "win32" and not _enable_windows_ansi():
+        # Old consoles print the raw codes as text, so only force colour if asked.
+        return mode == "always"
+    return True
 
 
 def _tolerate_odd_terminals() -> None:

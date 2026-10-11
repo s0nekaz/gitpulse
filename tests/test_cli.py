@@ -3,7 +3,9 @@ import io
 import json
 import unittest
 from datetime import date
+from unittest import mock
 
+from gitpulse import cli
 from gitpulse.cli import main
 from tests.helpers import TempDirTestCase, run_main
 
@@ -75,6 +77,26 @@ class CliTests(TempDirTestCase):
 
         with contextlib.redirect_stdout(HungUp()):
             self.assertEqual(main([str(self.repo_path), "--today", TODAY]), 0)
+
+
+class ColorChoiceTests(unittest.TestCase):
+    def _auto_on_windows(self, console_supports_ansi):
+        terminal = mock.Mock()
+        terminal.isatty.return_value = True
+        with mock.patch.object(cli.sys, "stdout", terminal), \
+                mock.patch.object(cli.sys, "platform", "win32"), \
+                mock.patch.dict(cli.os.environ, {}, clear=True), \
+                mock.patch.object(cli, "_enable_windows_ansi", return_value=console_supports_ansi):
+            return cli._use_color("auto")
+
+    def test_old_windows_console_gets_plain_output(self):
+        self.assertFalse(self._auto_on_windows(False))
+
+    def test_windows_console_that_supports_ansi_gets_colour(self):
+        self.assertTrue(self._auto_on_windows(True))
+
+    def test_never_always_win_over_detection(self):
+        self.assertFalse(cli._use_color("never"))
 
 
 class ArgumentTests(unittest.TestCase):
