@@ -2,7 +2,7 @@
 
 **Your commit history as a heatmap, right in the terminal.** One command, zero dependencies.
 
-[![CI](https://github.com/YOUR_USERNAME/gitpulse/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/gitpulse/actions/workflows/ci.yml)
+[![CI](https://github.com/s0nekaz/gitpulse/actions/workflows/ci.yml/badge.svg)](https://github.com/s0nekaz/gitpulse/actions/workflows/ci.yml)
 ![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
@@ -16,14 +16,14 @@ want: current streak, longest streak, busiest day, favourite weekday.
 ## Install
 
 ```bash
-pipx install git+https://github.com/YOUR_USERNAME/gitpulse
-# or: pip install git+https://github.com/YOUR_USERNAME/gitpulse
+pipx install git+https://github.com/s0nekaz/gitpulse
+# or: pip install git+https://github.com/s0nekaz/gitpulse
 ```
 
 Or skip installing entirely. It's pure standard library, so just clone and run:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gitpulse
+git clone https://github.com/s0nekaz/gitpulse
 cd gitpulse
 python -m gitpulse /path/to/any/repo
 ```
