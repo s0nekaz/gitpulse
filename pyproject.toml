@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gitpulse"
+dynamic = ["version"]
+description = "A commit heatmap and streak stats for any git repository, right in your terminal."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["git", "heatmap", "contributions", "streak", "cli", "terminal"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Utilities",
+]
+dependencies = []
+
+[project.scripts]
+gitpulse = "gitpulse.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "gitpulse.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["gitpulse*"]
